@@ -35,3 +35,4 @@ for (let i = 0; i < 20; i++) {
 
 
 board.renderOnConsole();
+board.renderOnPage(document.getElementById("board"));

@@ -44,7 +44,14 @@ class Ticket {
         if (this.person) {
             this.person.renderOnConsole();
         } else {
-            console.log(`      (no one assigned)`);
+            console.log(`      (unassigned)`);
         }
+    }
+
+    renderOnPage(columnTicketsContainerHtmlElement) {
+        let liHtmlElement = document.createElement("li");
+        liHtmlElement.classList.add("ticket");
+        liHtmlElement.innerHTML = `<h3>${this.title}</h3> <span class="person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
+        columnTicketsContainerHtmlElement.appendChild(liHtmlElement);
     }
 }

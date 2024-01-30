@@ -45,4 +45,18 @@ class Column {
             t.renderOnConsole();
         });
     }
+
+    renderOnPage(boardHtmlElement) {
+        let columnHtmlElement = document.createElement("section");
+        columnHtmlElement.className = "grid-column";
+        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`        
+
+        let columnTicketsContainerHtmlElement = document.createElement("ol");        
+        this.#tickets.forEach(t => {
+            t.renderOnPage(columnTicketsContainerHtmlElement);
+        });
+        columnHtmlElement.appendChild(columnTicketsContainerHtmlElement);
+        
+        boardHtmlElement.appendChild(columnHtmlElement);
+    }
 }
