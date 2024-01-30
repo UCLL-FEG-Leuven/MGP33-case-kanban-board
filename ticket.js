@@ -51,7 +51,7 @@ class Ticket {
     renderOnPage(columnTicketsContainerHtmlElement) {
         let liHtmlElement = document.createElement("li");
         liHtmlElement.classList.add("ticket");
-        liHtmlElement.innerHTML = `<h3>${this.title}</h3> <span class="person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
+        liHtmlElement.innerHTML = `<h3 class="ticket-title">${this.title}</h3> <span class="ticket-person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
         columnTicketsContainerHtmlElement.appendChild(liHtmlElement);
     }
 }

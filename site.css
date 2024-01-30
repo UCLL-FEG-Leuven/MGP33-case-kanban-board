@@ -24,14 +24,19 @@ body {
 }
 
 .ticket {
-    height: 8em;
+    height: 6em;
     background-color: #FFFF88;
     margin: 1em;
     position: relative;
 }
 
-.ticket .person {
+.ticket-title {
+    margin: 0.5em;
+}
+
+.ticket-person {
     position: absolute;
     bottom: 0;
     right: 0;
+    margin: 0.5em;
 }

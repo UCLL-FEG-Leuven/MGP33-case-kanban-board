@@ -21,7 +21,7 @@ class Column {
     }
 
     addTicket(ticket) {
-        // TODO: controleren op WiP (Work in Progress) limits -> exception;
+        if (!this.canAddTicket()) throw `Deze column zit vol: er kunnen geen tickets meer toegevoegd worden.`;
         if (ticket.column) throw `Dit ticket is gekoppeld aan de ${ticket.column.columnName} column. Gelieve daar eerst removeTicket() aan te roepen.`;
 
         this.#tickets.push(ticket);

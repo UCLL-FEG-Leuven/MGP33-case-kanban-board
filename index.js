@@ -1,4 +1,7 @@
+// Aanmaken van een board met 3 kolommen.
 let board = new Board("To do", "Doing", "Done");
+
+// Aanmaken van de 4 personen. De familienaam laten we leeg.
 let persons = [
     new Person("Rudy", ""),
     new Person("Suzy", ""),
@@ -6,16 +9,18 @@ let persons = [
     new Person("Vicky", "")
 ];
 
+// Aanmaken van 20 taken die we random in kolommen plaatsen en aan personen toekennen.
 for (let i = 0; i < 20; i++) {
-    // Eerst een nieuw ticket aanmaken/
+
+    // Eerst een nieuw ticket aanmaken.
     let ticket = new Ticket(`Ticket #${i}`);
 
-    // En het ticket op het board plaatsen.
+    // Dan het ticket op het board plaatsen.
     // Deze komt automatisch in de eerste kolom terecht.
     board.addTicket(ticket);
 
     // Verplaatsen naar een random kolom.
-    // Elk ticket komt standaard in de eerste kolom terecht, dus een move naar die kolom is niet nodig.
+    // Elk ticket komt standaard in de eerste kolom terecht, dus een move naar die eerste kolom is niet nodig.
     let randomColumnIndex = Math.floor(Math.random() * 3);
     switch (randomColumnIndex) {
         // case 0:
@@ -29,10 +34,11 @@ for (let i = 0; i < 20; i++) {
             break;                        
     }
 
+    // En vervolgens een random persoon toekennen.
     let randomPersonIndex = Math.floor(Math.random() * persons.length);
     ticket.person = persons[randomPersonIndex];
 };
 
-
+// Nu dat alles aangemaakt werd ... het resultaat tonen.
 board.renderOnConsole();
 board.renderOnPage(document.getElementById("board"));
