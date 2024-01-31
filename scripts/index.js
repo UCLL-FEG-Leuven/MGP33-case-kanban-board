@@ -1,3 +1,7 @@
+import { Board } from "./board.js";
+import { Person } from "./person.js";
+import { Ticket } from "./ticket.js";
+
 // Aanmaken van een board met 3 kolommen.
 let board = new Board("To do", "Doing", "Done");
 

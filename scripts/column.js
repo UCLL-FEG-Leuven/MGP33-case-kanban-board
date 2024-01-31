@@ -1,4 +1,4 @@
-class Column {
+export class Column {
     #columnName;
     #tickets;
 

@@ -1,4 +1,4 @@
-class Person {
+export class Person {
     static #lastId = 0;
 
     #id;
