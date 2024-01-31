@@ -1,4 +1,4 @@
-class Ticket {
+export class Ticket {
     static #lastId = 0;
 
     #id;
@@ -51,7 +51,7 @@ class Ticket {
     renderOnPage(columnTicketsContainerHtmlElement) {
         let liHtmlElement = document.createElement("li");
         liHtmlElement.classList.add("ticket");
-        
+
         // Tot nu hebben we voornamelijk gebruik gemaakt van createElement() voor het aanmaken
         // van de DOM elementen, maar in sommige gevallen is handiger om innerHTML te 
         // gebruiken. Qua performantie is dat echter iets minder optimaal omdat de browser die

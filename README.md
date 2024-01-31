@@ -20,3 +20,9 @@ Het Kanban board toont (rendert) zichzelf op twee manieren:
 
 Bemerk dat elke class zijn eigen render verantwoordelijkheid heeft:
 het Board rendert zijn deel, maar delegeert het renderen van de kolommen naar de Column objecten. De Column objecten renderen zichzelf maar delegeren op hun beurt ook weer het renderen van de tickets naar de eigenlijke Ticket objecten.
+
+## Iteratie/versie 0.2: modules (hoofdstuk 02)
+Deze iteratie vereist niet veel code aanpassingen.
+
+Elke class wordt ge-export-eerd en waar nodig ge-import-eerd.
+Verder werd de index.html aangepast: er werd nu enkel één script toegevoegd met het 'defer' attribuut. De browser zorgt zelf voor het laden van de andere scripts door de import statements uit te lezen. Meer informatie staat als commentaar in het index.html bestand.

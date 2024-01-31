@@ -1,4 +1,6 @@
-class Board {
+import { Column } from "./column.js";
+
+export class Board {
     #columns;
 
     // ...columnNames is een zogenaamde 'rest' parameter.
