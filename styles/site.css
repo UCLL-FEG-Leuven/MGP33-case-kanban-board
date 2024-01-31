@@ -1,0 +1,47 @@
+body {
+    font-family: Tahoma, "Trebuchet MS", sans-serif;
+    color: #002757;
+    background-color: #e9f3f8;
+}
+
+main {
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+.grid {
+    display: flex;
+}
+
+.grid-column {
+    flex: 1;
+    margin-right: 1em;
+    background-color: #9FDAF9;
+}
+
+.grid-column h2 {
+    text-align: center;
+}
+
+.grid-column ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ticket {
+    height: 6em;
+    background-color: #FFFF88;
+    margin: 1em;
+    position: relative;
+}
+
+.ticket-title {
+    margin: 0.5em;
+}
+
+.ticket-person {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0.5em;
+}
