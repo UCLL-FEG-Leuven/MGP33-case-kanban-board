@@ -16,10 +16,12 @@ class Column {
     }
 
     canAddTicket() {
-        // TODO: controleren op WiP (Work in Progress)
+        // TODO: Work In Progress Limit ondersteuning.
         return true;
     }
 
+    // Voegt een ticket toe aan de kolom.
+    // De column property van het ticket wordt ook opgevuld.
     addTicket(ticket) {
         if (!this.canAddTicket()) throw `Deze column zit vol: er kunnen geen tickets meer toegevoegd worden.`;
         if (ticket.column) throw `Dit ticket is gekoppeld aan de ${ticket.column.columnName} column. Gelieve daar eerst removeTicket() aan te roepen.`;
@@ -30,6 +32,8 @@ class Column {
         return ticket;
     }
 
+    // Verwijdert een ticket op basis van zijn ID.
+    // De column property van het ticket wordt op null gezet.
     removeTicket(ticketId) {
         let removedTickets = this.#tickets.filter(t => t.id === ticketId);
         if (removedTickets.length === 0) throw `Deze column ${this.columnName} bevat geen ticket met ID ${ticketId}`;
@@ -47,7 +51,7 @@ class Column {
     }
 
     renderOnPage(boardHtmlElement) {
-        let columnHtmlElement = document.createElement("section");
+        let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
         columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`        
 

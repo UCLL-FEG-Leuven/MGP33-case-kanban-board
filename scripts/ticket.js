@@ -51,7 +51,12 @@ class Ticket {
     renderOnPage(columnTicketsContainerHtmlElement) {
         let liHtmlElement = document.createElement("li");
         liHtmlElement.classList.add("ticket");
-        liHtmlElement.innerHTML = `<h3 class="ticket-title">${this.title}</h3> <span class="ticket-person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
+        
+        // Tot nu hebben we voornamelijk gebruik gemaakt van createElement() voor het aanmaken
+        // van de DOM elementen, maar in sommige gevallen is handiger om innerHTML te 
+        // gebruiken. Qua performantie is dat echter iets minder optimaal omdat de browser die
+        // string moet parsen en zelf omzetten naar de nodige DOM elementen.
+        liHtmlElement.innerHTML = `<h3 class="ticket-title">${this.title}</h3><span class="ticket-person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
         columnTicketsContainerHtmlElement.appendChild(liHtmlElement);
     }
 }

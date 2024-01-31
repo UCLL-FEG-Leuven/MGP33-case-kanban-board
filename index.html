@@ -4,18 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCLL FEG Kanban board</title>
-    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
     <main>
-        <h1>UCLL FEG Kanban board</h1>
-        <div id="board" class="grid">
-        </div>
+        <section>
+            <h1>UCLL FEG Kanban board</h1>
+            <div id="board" class="grid">
+                <!-- De inhoud van het board wordt dynamisch opgevuld. -->
+                <!-- Met de class 'grid' (zie styles/site.css) wordt een rudimentaire grid layout voorzien. -->
+            </div>            
+        </section>
     </main>
-    <script src="person.js"></script>
-    <script src="ticket.js"></script>
-    <script src="column.js"></script>
-    <script src="board.js"></script>
-    <script src="index.js"></script>
+    <!-- 
+        1) Scripts worden onderaan geplaatst zodat ze al kunnen toegang hebben tot de html 
+           elementen die ervoor komen. 
+           In hoofdstuk 2 gaan we zien hoe het gebruik van 'defer' het mogelijk maakt om
+           de scripts op te lijsten in de <head>.
+        2) Alle scripts worden opgelijst zodat ze ook allemaal geladen worden. 
+           In hoofdstuk 2 gaan we zien dat dit niet meer hoeft van zodra modules gebruikt worden.
+        3) De volgorde is ook belangrijk want een script kan bepaalde zaken gebruiken
+           van een ander script. Bij gebruik van modules zullen we ook hier geen aandacht meer
+           moeten aan schenken.
+    -->
+    <script src="scripts/person.js"></script>
+    <script src="scripts/ticket.js"></script>
+    <script src="scripts/column.js"></script>
+    <script src="scripts/board.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
