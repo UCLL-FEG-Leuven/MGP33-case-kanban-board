@@ -53,14 +53,13 @@ class Column {
     renderOnPage(boardHtmlElement) {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
-        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`        
+        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;
+        boardHtmlElement.appendChild(columnHtmlElement);     
 
-        let columnTicketsContainerHtmlElement = document.createElement("ol");        
+        let columnTicketsContainerHtmlElement = document.createElement("ol");
+        columnHtmlElement.appendChild(columnTicketsContainerHtmlElement);        
         this.#tickets.forEach(t => {
             t.renderOnPage(columnTicketsContainerHtmlElement);
         });
-        columnHtmlElement.appendChild(columnTicketsContainerHtmlElement);
-        
-        boardHtmlElement.appendChild(columnHtmlElement);
     }
 }
