@@ -99,7 +99,7 @@ export class Ticket {
         // Voor het gebruiksgemak krijgt die input ook al direct de focus.
         document.getElementById(titleHeadingId).addEventListener("click", (e) => {
             document.getElementById(titleHeadingId).style.display = "none";            
-            document.getElementById(titleFormId).style.display = "unset";
+            document.getElementById(titleFormId).style.display = "block";
             document.getElementById(titleInputId).focus();
         });
 
@@ -113,7 +113,7 @@ export class Ticket {
             document.querySelector(`#${titleHeadingId} span`).innerText = this.#title;
 
             // En de form weer verbergen en de header tonen.
-            document.getElementById(titleHeadingId).style.display = "unset";
+            document.getElementById(titleHeadingId).style.display = "block";
             document.getElementById(titleFormId).style.display = "none";
         });
 
@@ -121,7 +121,7 @@ export class Ticket {
         // Voor het gebruiksgemak krijgt die textarea ook al direct de focus.
         document.getElementById(descriptionParagraphId).addEventListener("click", (e) => {
             document.getElementById(descriptionParagraphId).style.display = "none";
-            document.getElementById(descriptionFormId).style.display = "unset";
+            document.getElementById(descriptionFormId).style.display = "block";
             document.getElementById(descriptionTextareaId).focus();
         });
 
@@ -135,7 +135,7 @@ export class Ticket {
             document.querySelector(`#${descriptionParagraphId}`).innerText = this.#description;
 
             // En de form weer verbergen en de header tonen.
-            document.getElementById(descriptionParagraphId).style.display = "unset";
+            document.getElementById(descriptionParagraphId).style.display = "block";
             document.getElementById(descriptionFormId).style.display = "none";
         });        
     }
