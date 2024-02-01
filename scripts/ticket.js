@@ -3,12 +3,14 @@ export class Ticket {
 
     #id;
     #title;
+    #description;
     #column;
     #person;
 
     constructor(title) {
         this.#id = Ticket.#lastId++;
         this.#title = title;
+        this.#description = "Voeg een omschrijving toe";
     }
 
     get id() {
@@ -21,6 +23,14 @@ export class Ticket {
 
     set title(value) {
         this.#title = value;
+    }
+
+    get description() {
+        return this.#description;
+    }
+
+    set description(value) {
+        this.#description = value;
     }
 
     get column() {
@@ -55,23 +65,26 @@ export class Ticket {
         const titleHeadingId = `ticket-title-heading-${this.id}`;
         const titleFormId = `ticket-title-form-${this.id}`;
         const titleInputId = `ticket-title-input-${this.id}`;
-        const personSpanId = `ticket-person-span-${this.id}`;
-        const personSelectId = `ticket-person-select-${this.id}`;
+
+        const descriptionParagraphId = `ticket-description-paragraph-${this.id}`;
+        const descriptionFormId = `ticket-description-form-${this.id}`;
+        const descriptionTextareaId = `ticket-description-textarea-${this.id}`;
 
         // Omdat we gebruik maken van innerHTML (en niet van createElement)
         // is het koppelen van event listeners iets omslachtiger.
         // Maar de code is wel leesbaarder...
-        // Belangrijk is wel dat het element al in de DOM gekoppeld is vooraleer je events
-        // kan koppelen. 
-        // Vandaar dat we in de class Column ook een kleine refactor hebben gedaan
-        // (= boardHtmlElement.appendChild(columnHtmlElement); werd geplaatst voor de render 
-        // van de tickets wordt aangeroepen).
         liHtmlElement.innerHTML = `
         <h3 id="${titleHeadingId}" class="ticket-title">
             <span>${this.title}</span>
         </h3>
         <form id="${titleFormId}" style="display: none">
             <input id="${titleInputId}" type="text" value="${this.title}" />
+            <input type="submit" value="Ok" />
+        </form>
+        <p id="${descriptionParagraphId}">${this.description}</p>
+        <form id="${descriptionFormId}" style="display: none">
+            <textarea id="${descriptionTextareaId}" rows="4" cols="20"></textarea>
+            <input type="submit" value="Ok" />
         </form>        
         <span class="ticket-person">
             ${this.person ? this.person.firstName : 'unassigned'}
@@ -90,9 +103,7 @@ export class Ticket {
             document.getElementById(titleInputId).focus();
         });
 
-        // Er werd een kleine form voorzien zonder submit button ... maar een Enter
-        // zal ook de form submitten. 
-        // TODO: kan je ook submitten als je ergens buiten de form klikt?
+        // Form om de titel aan te passen
         document.getElementById(titleFormId).addEventListener("submit", (e) => {
             // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
             e.preventDefault();
@@ -104,6 +115,28 @@ export class Ticket {
             // En de form weer verbergen en de header tonen.
             document.getElementById(titleHeadingId).style.display = "unset";
             document.getElementById(titleFormId).style.display = "none";
+        });
+
+        // Bij het klikken op de description moet een form met een textarea field getoond worden.
+        // Voor het gebruiksgemak krijgt die textarea ook al direct de focus.
+        document.getElementById(descriptionParagraphId).addEventListener("click", (e) => {
+            document.getElementById(descriptionParagraphId).style.display = "none";
+            document.getElementById(descriptionFormId).style.display = "unset";
+            document.getElementById(descriptionTextareaId).focus();
+        });
+
+        // Form om de description aan te passen
+        document.getElementById(descriptionFormId).addEventListener("submit", (e) => {
+            // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
+            e.preventDefault();
+
+            // nieuwe description uitlezen en onthouden + tonen in de header.
+            this.#description = document.getElementById(descriptionTextareaId).value;
+            document.querySelector(`#${descriptionParagraphId}`).innerText = this.#description;
+
+            // En de form weer verbergen en de header tonen.
+            document.getElementById(descriptionParagraphId).style.display = "unset";
+            document.getElementById(descriptionFormId).style.display = "none";
         });        
     }
 }
