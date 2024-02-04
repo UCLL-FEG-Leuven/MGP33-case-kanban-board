@@ -3,12 +3,14 @@ class Ticket {
 
     #id;
     #title;
+    #description;
     #column;
     #person;
 
     constructor(title) {
         this.#id = Ticket.#lastId++;
         this.#title = title;
+        this.#description = "";
     }
 
     get id() {
@@ -21,6 +23,14 @@ class Ticket {
 
     set title(value) {
         this.#title = value;
+    }
+
+    get description() {
+        return this.#description;
+    }
+
+    set description(value) {
+        this.#description = value;
     }
 
     get column() {
@@ -55,8 +65,12 @@ class Ticket {
         // Tot nu hebben we voornamelijk gebruik gemaakt van createElement() voor het aanmaken
         // van de DOM elementen, maar in sommige gevallen is handiger om innerHTML te 
         // gebruiken. Qua performantie is dat echter iets minder optimaal omdat de browser die
-        // string moet parsen en zelf omzetten naar de nodige DOM elementen.
-        liHtmlElement.innerHTML = `<h3 class="ticket-title">${this.title}</h3><span class="ticket-person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
+        // string moet parsen en zelf omzetten naar de nodige DOM elementen. Maar het is wel
+        // leesbaarder.
+        liHtmlElement.innerHTML = `
+            <h3 class="ticket-title">${this.title}</h3>
+            <p class="ticket-description">${this.description}</p>
+            <span class="ticket-person">${this.person ? this.person.firstName : 'unassigned'}</span>`;
         columnTicketsContainerHtmlElement.appendChild(liHtmlElement);
     }
 }
