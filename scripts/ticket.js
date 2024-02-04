@@ -1,3 +1,6 @@
+import { Person } from "./person.js";
+import { getAllPersons } from "./person-database.js";
+
 export class Ticket {
     static #lastId = 0;
 
@@ -58,7 +61,7 @@ export class Ticket {
         }
     }
 
-    renderOnPage(columnTicketsContainerHtmlElement) {
+    async renderOnPage(columnTicketsContainerHtmlElement) {
         let liHtmlElement = document.createElement("li");
         liHtmlElement.classList.add("ticket");
 
@@ -69,6 +72,10 @@ export class Ticket {
         const descriptionParagraphId = `ticket-description-paragraph-${this.id}`;
         const descriptionFormId = `ticket-description-form-${this.id}`;
         const descriptionTextareaId = `ticket-description-textarea-${this.id}`;
+
+        const personSpanId = `ticket-person-span-${this.id}`;
+        const personFormId = `ticket-person-form-${this.id}`;
+        const personSelectId = `ticket-person-select-${this.id}`;
 
         // Omdat we gebruik maken van innerHTML (en niet van createElement)
         // is het koppelen van event listeners iets omslachtiger.
@@ -86,19 +93,34 @@ export class Ticket {
             <textarea id="${descriptionTextareaId}" rows="4" cols="20"></textarea>
             <input type="submit" value="Ok" />
         </form>        
-        <span class="ticket-person">
+        <span id="${personSpanId}" class="ticket-person">
             ${this.person ? this.person.firstName : 'unassigned'}
-        </span>`;
+        </span>
+        <form id="${personFormId}" class="ticket-person" style="display: none">
+            <select id="${personSelectId}">
+                <option value="" selected>Selecteer een persoon...</option>
+                ${(await getAllPersons()).reduce(
+                    (accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}<option>`,
+                    ""
+                )}
+            </select>
+        </form>`;
 
         // Bij het appenden zal de browser de innerHTML parsen en zijn de nieuwe DOM elementen 
         // beschikbaar. Het is pas ook op dit moment dat event listeners kunnen gekoppeld worden
         // (als er dus gebruik wordt gemaakt van innerHTML).
         columnTicketsContainerHtmlElement.appendChild(liHtmlElement);
 
+        this.#wireTitleEventHandlers(titleHeadingId, titleFormId, titleInputId);
+        this.#wireDescriptionEventHandlers(descriptionParagraphId, descriptionFormId, descriptionTextareaId);       
+        this.#wirePersonEventHandlers(personSpanId, personFormId, personSelectId);
+    }
+
+    #wireTitleEventHandlers(titleHeadingId, titleFormId, titleInputId) {
         // Bij het klikken op de titel moet een form met een input field getoond worden.
         // Voor het gebruiksgemak krijgt die input ook al direct de focus.
         document.getElementById(titleHeadingId).addEventListener("click", (e) => {
-            document.getElementById(titleHeadingId).style.display = "none";            
+            document.getElementById(titleHeadingId).style.display = "none";
             document.getElementById(titleFormId).style.display = "block";
             document.getElementById(titleInputId).focus();
         });
@@ -115,8 +137,10 @@ export class Ticket {
             // En de form weer verbergen en de header tonen.
             document.getElementById(titleHeadingId).style.display = "block";
             document.getElementById(titleFormId).style.display = "none";
-        });
+        });        
+    }
 
+    #wireDescriptionEventHandlers(descriptionParagraphId, descriptionFormId, descriptionTextareaId) {
         // Bij het klikken op de description moet een form met een textarea field getoond worden.
         // Voor het gebruiksgemak krijgt die textarea ook al direct de focus.
         document.getElementById(descriptionParagraphId).addEventListener("click", (e) => {
@@ -139,4 +163,37 @@ export class Ticket {
             document.getElementById(descriptionFormId).style.display = "none";
         });        
     }
+
+    #wirePersonEventHandlers(personSpanId, personFormId, personSelectId) {
+        // Bij het klikken op de person moet een form met een select field getoond worden.
+        // Voor het gebruiksgemak krijgt die select ook al direct de focus.
+        document.getElementById(personSpanId).addEventListener("click", (e) => {
+            document.getElementById(personSpanId).style.display = "none";
+            document.getElementById(personFormId).style.display = "block";
+            document.getElementById(personSelectId).focus();
+        });
+
+        // Van zodra de gebruiker een nieuwe persoon heeft geselecteerd submitten we de form 
+        // direct...
+        document.getElementById(personSelectId).addEventListener("change", (e) => {
+            document.getElementById(personFormId).requestSubmit();
+        });
+
+        // Form om de person aan te passen
+        document.getElementById(personFormId).addEventListener("submit", async (e) => {
+            // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
+            e.preventDefault();
+
+            // nieuwe person uitlezen en onthouden + tonen in de header.
+            let persons = await getAllPersons();
+            let selectedPersonId = parseInt(document.getElementById(personSelectId).value);
+            console.log(selectedPersonId);
+            this.#person = persons.filter(p => p.id === selectedPersonId)[0];
+            document.querySelector(`#${personSpanId}`).innerText = this.#person.firstName;
+
+            // En de form weer verbergen en de header tonen.
+            document.getElementById(personSpanId).style.display = "block";
+            document.getElementById(personFormId).style.display = "none";
+        });
+    }    
 }

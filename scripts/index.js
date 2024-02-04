@@ -1,17 +1,12 @@
 import { Board } from "./board.js";
-import { Person } from "./person.js";
+import { getAllPersons } from "./person-database.js";
 import { Ticket } from "./ticket.js";
 
 // Aanmaken van een board met 3 kolommen.
 let board = new Board("To do", "Doing", "Done");
 
 // Aanmaken van de 4 personen. De familienaam laten we leeg.
-let persons = [
-    new Person("Rudy", ""),
-    new Person("Suzy", ""),
-    new Person("Franky", ""),
-    new Person("Vicky", "")
-];
+let persons = await getAllPersons();
 
 // Aanmaken van 20 taken die we random in kolommen plaatsen en aan personen toekennen.
 for (let i = 0; i < 20; i++) {

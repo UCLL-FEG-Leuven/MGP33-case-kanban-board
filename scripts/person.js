@@ -1,6 +1,8 @@
 export class Person {
     static #lastId = 0;
 
+
+
     #id;
     #firstName;
     #lastName;
