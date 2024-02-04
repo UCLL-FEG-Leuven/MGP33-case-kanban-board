@@ -31,7 +31,7 @@ main {
 .ticket {
     display: flex;
     flex-direction: column;
-    height: 8em;
+    min-height: 8em;
     background-color: #FFFF88;
     margin: 1em;
 }

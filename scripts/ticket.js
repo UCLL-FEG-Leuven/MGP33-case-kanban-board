@@ -84,13 +84,13 @@ export class Ticket {
         <h3 id="${titleHeadingId}" class="ticket-title">
             <span>${this.title}</span>
         </h3>
-        <form id="${titleFormId}" style="display: none">
+        <form id="${titleFormId}" class="ticket-title" style="display: none">
             <input id="${titleInputId}" type="text" value="${this.title}" />
             <input type="submit" value="Ok" />
         </form>
         <p id="${descriptionParagraphId}" class="ticket-description">${this.description}</p>
-        <form id="${descriptionFormId}" style="display: none">
-            <textarea id="${descriptionTextareaId}" rows="4" cols="20"></textarea>
+        <form id="${descriptionFormId}" class="ticket-description" style="display: none">
+            <textarea id="${descriptionTextareaId}" rows="2" cols="20">${this.description}</textarea>
             <input type="submit" value="Ok" />
         </form>        
         <span id="${personSpanId}" class="ticket-person">
