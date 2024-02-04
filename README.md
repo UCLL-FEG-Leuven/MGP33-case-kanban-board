@@ -26,3 +26,15 @@ Deze iteratie vereist niet veel code aanpassingen.
 
 Elke class wordt ge-export-eerd en waar nodig ge-import-eerd.
 Verder werd de index.html aangepast: er werd nu enkel één script toegevoegd met het 'defer' attribuut. De browser zorgt zelf voor het laden van de andere scripts door de import statements uit te lezen. Meer informatie staat als commentaar in het index.html bestand.
+
+## Iteratie/versie 0.3: async (hoofdstuk 03)
+Deze iteratie voegt interactiviteit met de gebruiker toe. De gebruiker kan:
+1. de titel van een ticket aanpassen in een ```<input>```.
+2. de beschrijving van een ticket aanpassen in een ```<textarea>```.
+3. een andere persoon toewijzen aan een ticket door middel van een ```<select>```.
+
+Wat 1 en 2 betreft: de code demonstreert hier het gebruik van callbacks. Door te klikken op respectievelijk een titel of beschrijving wordt er een form getoond door middel van een 'click' callback. Het submitten van die form resulteert vervolgens in de aanroep van een 'submit' callback die de gegevens en het scherm aanpast.
+
+Wat puntje 3 betreft (toewijzen van een andere persoon): wij hebben een person-database.js voorzien die een array van personen aanbiedt op basis van een Promise API. Hier kan je dus gebruik maken van async await. De lijst van personen wordt o.a. gebruikt om de ```<select>``` op te vullen. Die lijst wordt verder ook gebruik in index.js om random personen toe te wijzen aan de tickets.
+
+En last but not least: je kan tickets verslepen van de ene kolom naar de andere kolom door gebruik te maken van drag and drop API.
