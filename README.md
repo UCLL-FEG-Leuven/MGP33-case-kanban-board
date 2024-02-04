@@ -38,3 +38,12 @@ Wat 1 en 2 betreft: de code demonstreert hier het gebruik van callbacks. Door te
 Wat puntje 3 betreft (toewijzen van een andere persoon): wij hebben een person-database.js voorzien die een array van personen aanbiedt op basis van een Promise API. Hier kan je dus gebruik maken van async await. De lijst van personen wordt o.a. gebruikt om de ```<select>``` op te vullen. Die lijst wordt verder ook gebruik in index.js om random personen toe te wijzen aan de tickets.
 
 En last but not least: je kan tickets verslepen van de ene kolom naar de andere kolom door gebruik te maken van drag and drop API.
+
+## Iteratie/versie 0.4: node, npm & express (hoofdstuk 04)
+In deze iteratie passen we de folder structuur lichtjes aan:
+* ```\client``` bevat al de frontend bestanden (html, js, css)
+* ```\backend``` bevat de backend javascript code: dat is code die uitvoert op de server.
+
+In deze iteratie maken we dus ook niet meer gebruik van de LiveServer extension: we gaan nu onze eigen web server draaien!
+
+Verder demonstreert deze versie ook het gebruik van een package.json en de installatie van de chart.js library. Via chart.js kan je grafieken tonen op je webpagina's.
