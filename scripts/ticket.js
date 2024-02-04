@@ -13,7 +13,7 @@ export class Ticket {
     constructor(title) {
         this.#id = Ticket.#lastId++;
         this.#title = title;
-        this.#description = "Voeg een omschrijving toe";
+        this.#description = "";
     }
 
     get id() {
@@ -100,9 +100,9 @@ export class Ticket {
             <select id="${personSelectId}">
                 <option value="" selected>Selecteer een persoon...</option>
                 ${(await getAllPersons()).reduce(
-                    (accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}<option>`,
-                    ""
-                )}
+            (accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}<option>`,
+            ""
+        )}
             </select>
         </form>`;
 

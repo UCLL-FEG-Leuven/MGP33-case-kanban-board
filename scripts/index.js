@@ -13,6 +13,7 @@ for (let i = 0; i < 20; i++) {
 
     // Eerst een nieuw ticket aanmaken.
     let ticket = new Ticket(`Ticket #${i}`);
+    ticket.description = "Automatisch aangemaakt ticket";
 
     // Dan het ticket op het board plaatsen.
     // Deze komt automatisch in de eerste kolom terecht.
