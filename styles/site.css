@@ -29,19 +29,29 @@ main {
 }
 
 .ticket {
-    height: 8em;
+    display: flex;
+    flex-direction: column;
+    min-height: 8em;
     background-color: #FFFF88;
     margin: 1em;
-    position: relative;
 }
 
 .ticket-title {
+    align-self: flex-start;
     margin: 0.5em;
 }
 
+.ticket-description {
+    align-self: center;
+    margin-bottom: auto;
+    font-style: italic;
+}
+
 .ticket-person {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    align-self: flex-end;
     margin: 0.5em;
+}
+
+textarea {
+    resize: none;
 }

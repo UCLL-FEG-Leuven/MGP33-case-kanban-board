@@ -2,6 +2,10 @@ export class Column {
     #columnName;
     #tickets;
 
+    // De <ol> wordt bijgehouden in een private field omdat we bij een 'drop'
+    // toegang moeten hebben tot die lijst (om de lijst aan te vullen).
+    #columnTicketsContainerHtmlElement;
+
     constructor(columnName) {
         this.#columnName = columnName;
         this.#tickets = [];
@@ -53,13 +57,28 @@ export class Column {
     renderOnPage(boardHtmlElement) {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
-        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;
-        boardHtmlElement.appendChild(columnHtmlElement);     
+        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;      
+        boardHtmlElement.appendChild(columnHtmlElement);
 
-        let columnTicketsContainerHtmlElement = document.createElement("ol");
-        columnHtmlElement.appendChild(columnTicketsContainerHtmlElement);        
+        // Koppelen van drop event handlers.
+        this.#wireDragAndDropEventHandlers(columnHtmlElement);
+
+        this.#columnTicketsContainerHtmlElement = document.createElement("ol");
+        columnHtmlElement.appendChild(this.#columnTicketsContainerHtmlElement);        
         this.#tickets.forEach(t => {
-            t.renderOnPage(columnTicketsContainerHtmlElement);
+            t.renderOnPage(this.#columnTicketsContainerHtmlElement);
         });
+    }
+
+    #wireDragAndDropEventHandlers(columnHtmlElement) {
+        columnHtmlElement.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+        columnHtmlElement.addEventListener("drop", (e) => {
+            e.preventDefault();
+            let ticketId = e.dataTransfer.getData("ticket-id");
+            let ticketToMove = document.getElementById(ticketId);
+            this.#columnTicketsContainerHtmlElement.insertBefore(ticketToMove, this.#columnTicketsContainerHtmlElement.firstChild);
+        });  
     }
 }
