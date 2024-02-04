@@ -63,7 +63,12 @@ export class Ticket {
 
     async renderOnPage(columnTicketsContainerHtmlElement) {
         let liHtmlElement = document.createElement("li");
+        liHtmlElement.setAttribute("id", `ticket-${this.id}`);
+        liHtmlElement.setAttribute("draggable", "true"); // Dit is belangrijk om een ticket 'draggable' te maken.
         liHtmlElement.classList.add("ticket");
+
+        // Koppelen van drag event handlers.
+        this.#wireDragAndDropEventHandlers(liHtmlElement);
 
         const titleHeadingId = `ticket-title-heading-${this.id}`;
         const titleFormId = `ticket-title-form-${this.id}`;
@@ -114,6 +119,12 @@ export class Ticket {
         this.#wireTitleEventHandlers(titleHeadingId, titleFormId, titleInputId);
         this.#wireDescriptionEventHandlers(descriptionParagraphId, descriptionFormId, descriptionTextareaId);       
         this.#wirePersonEventHandlers(personSpanId, personFormId, personSelectId);
+    }
+
+    #wireDragAndDropEventHandlers(liHtmlElement) {
+        liHtmlElement.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("ticket-id", e.target.id);
+        });
     }
 
     #wireTitleEventHandlers(titleHeadingId, titleFormId, titleInputId) {
