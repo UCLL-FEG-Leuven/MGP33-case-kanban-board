@@ -77,7 +77,8 @@ export class Column {
         columnHtmlElement.addEventListener("drop", (e) => {
             e.preventDefault();
             let ticketId = e.dataTransfer.getData("ticket-id");
-            this.#columnTicketsContainerHtmlElement.appendChild(document.getElementById(ticketId));
+            let ticketToMove = document.getElementById(ticketId);
+            this.#columnTicketsContainerHtmlElement.insertBefore(ticketToMove, this.#columnTicketsContainerHtmlElement.firstChild);
         });  
     }
 }

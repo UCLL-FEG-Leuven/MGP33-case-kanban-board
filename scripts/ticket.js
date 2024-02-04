@@ -95,7 +95,7 @@ export class Ticket {
         </form>
         <p id="${descriptionParagraphId}" class="ticket-description">${this.description}</p>
         <form id="${descriptionFormId}" class="ticket-description" style="display: none">
-            <textarea id="${descriptionTextareaId}" rows="2" cols="20">${this.description}</textarea>
+            <textarea id="${descriptionTextareaId}" rows="2" cols="50">${this.description}</textarea>
             <input type="submit" value="Ok" />
         </form>        
         <span id="${personSpanId}" class="ticket-person">
