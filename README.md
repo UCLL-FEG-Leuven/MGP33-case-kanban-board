@@ -39,11 +39,26 @@ Wat puntje 3 betreft (toewijzen van een andere persoon): wij hebben een person-d
 
 En last but not least: je kan tickets verslepen van de ene kolom naar de andere kolom door gebruik te maken van drag and drop API.
 
+PS: het toevoegen en verwijderen van tickets zullen we nog niet in deze iteratie voorzien, dat zal gebeuren in iteratie/versie 0.5: JSON.
+
 ## Iteratie/versie 0.4: node, npm & express (hoofdstuk 04)
-In deze iteratie passen we de folder structuur lichtjes aan:
+In deze iteratie maken we geen gebruik meer van de LiveServer extension: we gaan nu onze eigen web server draaien! Verder gaan we ook het gebruik van de chart.js library demonstreren. Deze library zal geïnstalleerd worden via npm.
+
+Daartoe passen we de folder structuur lichtjes aan:
 * ```\client``` bevat al de frontend bestanden (html, js, css)
-* ```\backend``` bevat de backend javascript code: dat is code die uitvoert op de server.
+* ```\server``` bevat de backend code: dat is code die uitvoert op de server. In dit hoofdstuk maken we gebruik van Node en Express, maar je zou hier evengoed een ASP.NET Core project kunnen plaatsen. ASP.NET Core is namelijk ook perfect in staat om static bestanden te hosten.
 
-In deze iteratie maken we dus ook niet meer gebruik van de LiveServer extension: we gaan nu onze eigen web server draaien!
+Bemerk dat beide folders een **package.json** bestand hebben.
+Deze werden telkens aangemaakt met ```npm init```. 
+Door deze package.json bestanden te voorzien kunnen we nu ook makkelijk npm packages installeren.
 
-Verder demonstreert deze versie ook het gebruik van een package.json en de installatie van de chart.js library. Via chart.js kan je grafieken tonen op je webpagina's.
+Om vrij makkelijk, zonder al teveel code, een web server op te zetten hebben we de **express** npm package geïnstalleerd. Met deze package kunnen we snel een basic web server opzetten die de bestanden uit /client aanbiedt. Om de server te starten open je een terminal en ga je naar de /server folder. Daar voer je dan het **start** scriptje uit. Dat doe je met ```npm run start```. 
+
+Als je de package.json van /server bekijkt zal je ook zien dat we een tweetal ```devDependencies``` hebben geïnstalleerd:
+1. **cross-env**: laat toe om environment variabelen door te geven aan een script. Zo kunnen we bijvoorbeeld de poort doorgeven en moeten we dat niet hardcoden in server.js.
+2. **nodemon**: monitort je bestanden in /server. Van zodra je iets wijzigt aan server.js zal nodemon de server stoppen en weer starten. Superhandig als je veel aan het sleutel bent aan je backend.
+
+Het start script zal vooraf trouwens ook een ```npm ci``` uitvoeren: zo worden al de benodigde packages automatisch geïnstalleerd en moet je dat dus zelf niet meer doen.
+
+Verder demonstreert deze versie ook de ```chart.js``` library. Via chart.js kan je grafieken tonen op je webpagina's.
+Bemerk dat deze npm package werd geïnstalleerd in de /client folder aangezien het een library is die je in de frontend moet gebruiken (deze library wordt dus uitgevoerd in de browser).
