@@ -6,6 +6,9 @@
     <meta name="description" content="An example (case) that demonstrates all important concepts introduced in the UCLL Frontend gevorderd couse.">
     <title>UCLL FEG Kanban board</title>
     <link rel="stylesheet" href="styles/site.css">
+    <!-- Hoe je een library moet toevoegen wordt vaak gedocumenteerd door de auteurs van 
+    de library. Voor chart.js: zie https://www.chartjs.org/docs/latest/getting-started/ -->
+    <script src="node_modules/chart.js/dist/chart.umd.js" defer></script>
     <!--
         Door type="module" op te geven zal de browser gebruik maken van ES6 modules.
         Je moet dan enkel het 'start' script toevoegen. 
@@ -24,6 +27,9 @@
                 <!-- Met de class 'grid' (zie styles/site.css) wordt een rudimentaire grid layout voorzien. -->
             </div>            
         </section>
+        <aside>
+            <canvas id="pie-chart"></canvas>
+        </aside>
     </main>
 </body>
 </html>

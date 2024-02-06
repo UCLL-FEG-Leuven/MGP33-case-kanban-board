@@ -1,3 +1,5 @@
+import { updatePieChart } from "./pie-chart.js";
+
 export class Column {
     #columnName;
     #tickets;
@@ -68,6 +70,10 @@ export class Column {
         this.#tickets.forEach(t => {
             t.renderOnPage(this.#columnTicketsContainerHtmlElement);
         });
+
+        // En de pie chart bijwerken. 
+        // We gaan deze ook telkens moeten bijwerken van zodra de lijst van tickets wijzigd.
+        updatePieChart(this.columnName, this.tickets.length); 
     }
 
     #wireDragAndDropEventHandlers(columnHtmlElement) {
@@ -79,6 +85,9 @@ export class Column {
             let ticketId = e.dataTransfer.getData("ticket-id");
             let ticketToMove = document.getElementById(ticketId);
             this.#columnTicketsContainerHtmlElement.insertBefore(ticketToMove, this.#columnTicketsContainerHtmlElement.firstChild);
+
+            // En de pie chart nogmaals bijwerken.
+            updatePieChart(this.columnName, this.tickets.length);
         });  
     }
 }

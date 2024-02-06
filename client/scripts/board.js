@@ -64,6 +64,6 @@ export class Board {
     renderOnPage(boardHtmlElement) {
         this.#columns.forEach(c => {
             c.renderOnPage(boardHtmlElement);
-        });        
+        });
     }
 }
