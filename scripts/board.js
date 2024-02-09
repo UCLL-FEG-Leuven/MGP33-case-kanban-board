@@ -10,7 +10,7 @@ export class Board {
         this.#columns = [];
         columnNames.forEach(columnName => {
            // Het board geeft zichzelf mee aan de column.
-           // Zo heefdt de column ook toegang tot de properties en methods van zijn board (o.a. om een moveTicket aan te roepen bij drag en drop).
+           // Zo heeft de column ook toegang tot de properties en methods van zijn board (o.a. om een moveTicket aan te roepen bij drag en drop).
            this.#columns.push(new Column(this, columnName)); 
         });
     }
