@@ -58,7 +58,7 @@ export class Column {
         });
     }
 
-    renderOnPage(boardHtmlElement) {
+    async renderOnPage(boardHtmlElement) {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
         columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;      
@@ -69,8 +69,8 @@ export class Column {
 
         this.#columnTicketsContainerHtmlElement = document.createElement("ol");
         columnHtmlElement.appendChild(this.#columnTicketsContainerHtmlElement);        
-        this.#tickets.forEach(t => {
-            t.renderOnPage(this.#columnTicketsContainerHtmlElement);
+        this.#tickets.forEach(async t => {
+            await t.renderOnPage(this.#columnTicketsContainerHtmlElement);
         });
 
         // De pie chart een eerste keer bijwerken. 

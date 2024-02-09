@@ -41,4 +41,4 @@ for (let i = 0; i < 20; i++) {
 
 // Nu dat alles aangemaakt werd ... het resultaat tonen.
 board.renderOnConsole();
-board.renderOnPage(document.getElementById("board"));
+await board.renderOnPage(document.getElementById("board"));

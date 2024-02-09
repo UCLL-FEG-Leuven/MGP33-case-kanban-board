@@ -104,10 +104,7 @@ export class Ticket {
         <form id="${personFormId}" class="ticket-person" style="display: none">
             <select id="${personSelectId}">
                 <option value="" selected>Selecteer een persoon...</option>
-                ${(await getAllPersons()).reduce(
-            (accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}<option>`,
-            ""
-        )}
+                ${(await getAllPersons()).reduce((accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}</option>`,"")}
             </select>
         </form>`;
 

@@ -69,9 +69,9 @@ export class Board {
     }
 
     // 2e meer realistische manier van renderen: het board toont zichzelf op de pagina.
-    renderOnPage(boardHtmlElement) {
-        this.#columns.forEach(c => {
-            c.renderOnPage(boardHtmlElement);
+    async renderOnPage(boardHtmlElement) {
+        this.#columns.forEach(async c => {
+            await c.renderOnPage(boardHtmlElement);
         });
     }
 }
