@@ -1,4 +1,5 @@
 import { Column } from "./column.js";
+import { updatePieChart } from "./pie-chart.js";
 
 export class Board {
     #columns;
@@ -9,7 +10,9 @@ export class Board {
     constructor(...columnNames) {
         this.#columns = [];
         columnNames.forEach(columnName => {
-           this.#columns.push(new Column(columnName)); 
+           // Het board geeft zichzelf mee aan de column.
+           // Zo heeft de column ook toegang tot de properties en methods van zijn board (o.a. om een moveTicket aan te roepen bij drag en drop).
+           this.#columns.push(new Column(this, columnName)); 
         });
     }
 
@@ -45,6 +48,11 @@ export class Board {
         if (newColumn.canAddTicket()) {
             oldColumn.removeTicket(ticket.id);
             newColumn.addTicket(ticket);
+
+            // De pie chart bijwerken
+            updatePieChart(oldColumn.columnName, oldColumn.tickets.length);
+            updatePieChart(newColumn.columnName, newColumn.tickets.length);
+
             return true;
         } else {
             // Work In Progress Limit is bereikt: de newColumn kan geen tickets meer accepteren.

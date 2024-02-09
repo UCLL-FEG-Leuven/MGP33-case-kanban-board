@@ -123,7 +123,7 @@ export class Ticket {
 
     #wireDragAndDropEventHandlers(liHtmlElement) {
         liHtmlElement.addEventListener("dragstart", (e) => {
-            e.dataTransfer.setData("ticket-id", e.target.id);
+            e.dataTransfer.setData("ticketId", this.id);
         });
     }
 

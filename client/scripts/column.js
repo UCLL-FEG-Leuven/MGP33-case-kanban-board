@@ -1,6 +1,7 @@
 import { updatePieChart } from "./pie-chart.js";
 
 export class Column {
+    #board;
     #columnName;
     #tickets;
 
@@ -8,7 +9,8 @@ export class Column {
     // toegang moeten hebben tot die lijst (om de lijst aan te vullen).
     #columnTicketsContainerHtmlElement;
 
-    constructor(columnName) {
+    constructor(board, columnName) {
+        this.#board = board;
         this.#columnName = columnName;
         this.#tickets = [];
     }
@@ -71,8 +73,8 @@ export class Column {
             t.renderOnPage(this.#columnTicketsContainerHtmlElement);
         });
 
-        // En de pie chart bijwerken. 
-        // We gaan deze ook telkens moeten bijwerken van zodra de lijst van tickets wijzigd.
+        // De pie chart een eerste keer bijwerken. 
+        // Het board zal ook telkens de pie chart bijwerken van zodra er een moveTicket gebeurt (vb. door een drag en drop)
         updatePieChart(this.columnName, this.tickets.length); 
     }
 
@@ -82,12 +84,12 @@ export class Column {
         });
         columnHtmlElement.addEventListener("drop", (e) => {
             e.preventDefault();
-            let ticketId = e.dataTransfer.getData("ticket-id");
-            let ticketToMove = document.getElementById(ticketId);
-            this.#columnTicketsContainerHtmlElement.insertBefore(ticketToMove, this.#columnTicketsContainerHtmlElement.firstChild);
-
-            // En de pie chart nogmaals bijwerken.
-            updatePieChart(this.columnName, this.tickets.length);
+            let ticketId = parseInt(e.dataTransfer.getData("ticketId"));
+            if (this.#board.moveTicket(ticketId, this.columnName)) {
+                // Nu nog 'visueel' verplaatsen
+                let ticketHtmlElementToMove = document.getElementById(`ticket-${ticketId}`);
+                this.#columnTicketsContainerHtmlElement.insertBefore(ticketHtmlElementToMove, this.#columnTicketsContainerHtmlElement.firstChild);
+            }
         });  
     }
 }
