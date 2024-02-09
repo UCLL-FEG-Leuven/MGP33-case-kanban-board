@@ -1,4 +1,5 @@
 export class Column {
+    #board;
     #columnName;
     #tickets;
 
@@ -6,7 +7,8 @@ export class Column {
     // toegang moeten hebben tot die lijst (om de lijst aan te vullen).
     #columnTicketsContainerHtmlElement;
 
-    constructor(columnName) {
+    constructor(board, columnName) {
+        this.#board = board;
         this.#columnName = columnName;
         this.#tickets = [];
     }
@@ -76,9 +78,12 @@ export class Column {
         });
         columnHtmlElement.addEventListener("drop", (e) => {
             e.preventDefault();
-            let ticketId = e.dataTransfer.getData("ticket-id");
-            let ticketToMove = document.getElementById(ticketId);
-            this.#columnTicketsContainerHtmlElement.insertBefore(ticketToMove, this.#columnTicketsContainerHtmlElement.firstChild);
+            let ticketId = parseInt(e.dataTransfer.getData("ticketId"));
+            if (this.#board.moveTicket(ticketId, this.columnName)) {
+                // Nu nog 'visueel' verplaatsen
+                let ticketHtmlElementToMove = document.getElementById(`ticket-${ticketId}`);
+                this.#columnTicketsContainerHtmlElement.insertBefore(ticketHtmlElementToMove, this.#columnTicketsContainerHtmlElement.firstChild);
+            }
         });  
     }
 }
