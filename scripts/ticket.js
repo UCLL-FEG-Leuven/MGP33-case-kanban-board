@@ -104,10 +104,7 @@ export class Ticket {
         <form id="${personFormId}" class="ticket-person" style="display: none">
             <select id="${personSelectId}">
                 <option value="" selected>Selecteer een persoon...</option>
-                ${(await getAllPersons()).reduce(
-            (accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}<option>`,
-            ""
-        )}
+                ${(await getAllPersons()).reduce((accumulator, currentPerson) => accumulator + `<option value="${currentPerson.id}">${currentPerson.firstName}</option>`,"")}
             </select>
         </form>`;
 
@@ -123,7 +120,7 @@ export class Ticket {
 
     #wireDragAndDropEventHandlers(liHtmlElement) {
         liHtmlElement.addEventListener("dragstart", (e) => {
-            e.dataTransfer.setData("ticket-id", e.target.id);
+            e.dataTransfer.setData("ticketId", this.id);
         });
     }
 
