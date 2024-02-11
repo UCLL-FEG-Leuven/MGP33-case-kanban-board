@@ -1,0 +1,16 @@
+{
+  "name": "mgp33-case-kanban-board",
+  "version": "0.0.1",
+  "description": "Kanban board case voor FEG",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd Client & npm ci & cd .. & cd Server & npm ci & npm run start"
+  },
+  "keywords": [
+    "UCLL",
+    "FEG",
+    "Kanban"
+  ],
+  "author": "David Urting",
+  "license": "UNLICENSED"
+}
