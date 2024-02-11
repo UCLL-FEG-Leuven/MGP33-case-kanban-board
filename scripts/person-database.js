@@ -29,6 +29,4 @@ export async function getAllPersons() {
             resolve(persons);
         })
     }
-
 }
-
