@@ -9,7 +9,9 @@ export class Board {
     constructor(...columnNames) {
         this.#columns = [];
         columnNames.forEach(columnName => {
-           this.#columns.push(new Column(columnName)); 
+           // Het board geeft zichzelf mee aan de column.
+           // Zo heeft de column ook toegang tot de properties en methods van zijn board (o.a. om een moveTicket aan te roepen bij drag en drop).
+           this.#columns.push(new Column(this, columnName)); 
         });
     }
 
@@ -44,7 +46,8 @@ export class Board {
         // Kan de newColumn nog een nieuw ticket accepteren (Work In Progress Limit)?
         if (newColumn.canAddTicket()) {
             oldColumn.removeTicket(ticket.id);
-            newColumn.addTicket(ticket);
+            newColumn.addTicket(ticket);     
+
             return true;
         } else {
             // Work In Progress Limit is bereikt: de newColumn kan geen tickets meer accepteren.
@@ -61,9 +64,9 @@ export class Board {
     }
 
     // 2e meer realistische manier van renderen: het board toont zichzelf op de pagina.
-    renderOnPage(boardHtmlElement) {
-        this.#columns.forEach(c => {
-            c.renderOnPage(boardHtmlElement);
+    async renderOnPage(boardHtmlElement) {
+        this.#columns.forEach(async c => {
+            await c.renderOnPage(boardHtmlElement);
         });        
     }
 }
