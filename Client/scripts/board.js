@@ -48,7 +48,7 @@ export class Board {
             newColumn.addTicket(ticket);
 
             updatePieChart(oldColumn.columnName, oldColumn.tickets.length);
-            updatePieChart(newColumn.columnName, oldColumn.tickets.length);
+            updatePieChart(newColumn.columnName, newColumn.tickets.length);
 
             return true;
         } else {
