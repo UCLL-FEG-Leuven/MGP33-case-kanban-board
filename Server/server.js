@@ -25,7 +25,7 @@ const port = process.env.PORT ? process.env.PORT : 3000;
 app.use(connectLiveReload());
 
 // De static files middleware registreren
-app.use("/", express.static(join(__dirname, '..', 'client')));
+app.use("/", express.static(join(__dirname, '..', 'Client')));
 
 app.listen(port, () => {
     console.log(`Node-Express server listening on port ${port}`);
