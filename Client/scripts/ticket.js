@@ -204,4 +204,18 @@ export class Ticket {
             document.getElementById(personFormId).style.display = "none";
         });
     }    
+
+    save(ticketObjectForStore) {
+        ticketObjectForStore.title = this.title;
+        ticketObjectForStore.description = this.description;
+        ticketObjectForStore.personId = this.person ? this.person.id : null;
+    }
+
+    static async load(ticketObjectFromStore) {
+        let persons = await getAllPersons();
+        let ticket = new Ticket(ticketObjectFromStore.title);
+        this.description = ticketObjectFromStore.description;
+        this.currentPerson = ticketObjectFromStore.currentPersonId ? persons.filter(p => p.id === ticketObjectFromStore.currentPersonId)[0] : null;
+        return ticket;
+    }
 }

@@ -1,4 +1,5 @@
 import { updatePieChart } from "./pie-chart.js";
+import { Ticket } from "./ticket.js";
 
 export class Column {
     #board;
@@ -61,7 +62,20 @@ export class Column {
     async renderOnPage(boardHtmlElement) {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
-        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;      
+        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`
+        let buttonElement = document.createElement("button");
+        buttonElement.setAttribute('class', 'add');
+        buttonElement.innerText = '+';        
+        buttonElement.addEventListener('click', async (e) => {
+            let ticket = new Ticket('Pas de titel aan');
+            ticket.description = 'Voeg een beschrijving toe';
+            this.#board.addTicket(ticket);
+            this.#board.moveTicket(ticket.id, this.columnName);
+
+            let ol = e.currentTarget.parentElement.lastChild;
+            await ticket.renderOnPage(ol);
+        });
+        columnHtmlElement.appendChild(buttonElement);
         boardHtmlElement.appendChild(columnHtmlElement);
 
         // Koppelen van drop event handlers.
@@ -91,5 +105,24 @@ export class Column {
                 this.#columnTicketsContainerHtmlElement.insertBefore(ticketHtmlElementToMove, this.#columnTicketsContainerHtmlElement.firstChild);
             }
         });  
+    }
+
+    save(columnObjectToStore) {
+        columnObjectToStore.columnName = this.columnName;
+        columnObjectToStore.tickets = [];
+        this.#tickets.forEach(t => {
+            let ticketObjectToStore = {};
+            t.save(ticketObjectToStore);
+            columnObjectToStore.tickets.push(ticketObjectToStore);
+        });
+    }
+
+    static async load(board, columnObjectFromStore) {
+        let column = new Column(board, columnObjectFromStore.columnName);
+        columnObjectFromStore.tickets.forEach(async ticketObjectFromStore => {
+            let ticket = await Ticket.load(ticketObjectFromStore);
+            column.#tickets.push(ticket);
+        });
+        return column;
     }
 }

@@ -24,6 +24,11 @@ section {
     background-color: #9FDAF9;
 }
 
+.grid-column .add {
+    width: 2em;
+    margin: 0 auto;
+}
+
 .grid-column h2 {
     text-align: center;
 }

@@ -17,6 +17,7 @@ export class Board {
     // Voegt het ticket toe aan de eerste column.
     addTicket(ticket) {
         this.#columns[0].addTicket(ticket);
+        this.save();
         return ticket;
     }
 
@@ -50,6 +51,8 @@ export class Board {
             updatePieChart(oldColumn.columnName, oldColumn.tickets.length);
             updatePieChart(newColumn.columnName, newColumn.tickets.length);
 
+            this.save();
+
             return true;
         } else {
             // Work In Progress Limit is bereikt: de newColumn kan geen tickets meer accepteren.
@@ -70,5 +73,32 @@ export class Board {
         this.#columns.forEach(c => {
             c.renderOnPage(boardHtmlElement);
         });        
+    }
+
+    save() {
+        let boardObjectToStore = {
+            columns: []
+        };
+        this.#columns.forEach(column => {
+            let columnObjectToStore = {};
+            column.save(columnObjectToStore);
+            boardObjectToStore.columns.push(columnObjectToStore);
+        });
+
+        let boardStringToStore =  JSON.stringify(boardObjectToStore);
+        window.localStorage.setItem("board", boardStringToStore);
+    }
+
+    static async load() {
+        let boardStringFromStore = window.localStorage.getItem("board");
+        if (boardStringFromStore) {
+            let board = new Board();
+            let boardObjectFromStore = JSON.parse(boardStringFromStore);
+            boardObjectFromStore.columns.forEach(async columnObjectFromStore => {
+                let column = await Column.load(board, columnObjectFromStore);
+                board.#columns.push(column);
+            });
+            return board;
+        } else return null;
     }
 }
