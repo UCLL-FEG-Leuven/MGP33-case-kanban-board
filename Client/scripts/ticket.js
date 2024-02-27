@@ -145,6 +145,9 @@ export class Ticket {
             // En de form weer verbergen en de header tonen.
             document.getElementById(titleHeadingId).style.display = "block";
             document.getElementById(titleFormId).style.display = "none";
+
+            // direct bewaren
+            this.#column.requestSave();
         });        
     }
 
@@ -169,6 +172,9 @@ export class Ticket {
             // En de form weer verbergen en de header tonen.
             document.getElementById(descriptionParagraphId).style.display = "block";
             document.getElementById(descriptionFormId).style.display = "none";
+
+            // direct bewaren
+            this.#column.requestSave();
         });        
     }
 
@@ -195,13 +201,15 @@ export class Ticket {
             // nieuwe person uitlezen en onthouden + tonen in de header.
             let persons = await getAllPersons();
             let selectedPersonId = parseInt(document.getElementById(personSelectId).value);
-            console.log(selectedPersonId);
             this.#person = persons.filter(p => p.id === selectedPersonId)[0];
             document.querySelector(`#${personSpanId}`).innerText = this.#person.firstName;
 
             // En de form weer verbergen en de header tonen.
             document.getElementById(personSpanId).style.display = "block";
             document.getElementById(personFormId).style.display = "none";
+
+            // direct bewaren
+            this.#column.requestSave();
         });
     }    
 
@@ -215,7 +223,7 @@ export class Ticket {
         let persons = await getAllPersons();
         let ticket = new Ticket(ticketObjectFromStore.title);
         this.description = ticketObjectFromStore.description;
-        this.currentPerson = ticketObjectFromStore.currentPersonId ? persons.filter(p => p.id === ticketObjectFromStore.currentPersonId)[0] : null;
+        this.person = ticketObjectFromStore.currentPersonId ? persons.filter(p => p.id === ticketObjectFromStore.personId)[0] : null;
         return ticket;
     }
 }

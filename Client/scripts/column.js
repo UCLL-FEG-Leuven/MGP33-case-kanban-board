@@ -38,6 +38,8 @@ export class Column {
         this.#tickets.push(ticket);
         ticket.column = this;
 
+        updatePieChart(this.columnName, this.#tickets.length);
+
         return ticket;
     }
 
@@ -49,6 +51,9 @@ export class Column {
 
         this.#tickets = this.#tickets.filter(t => t.id !== ticketId);
         removedTickets[0].column = null;
+
+        updatePieChart(this.columnName, this.#tickets.length);
+
         return removedTickets[0];
     }
 
@@ -88,7 +93,7 @@ export class Column {
         });
 
         // De pie chart een eerste keer bijwerken. 
-        // Het board zal ook telkens de pie chart bijwerken van zodra er een moveTicket gebeurt (vb. door een drag en drop)
+        // Het board zal ook telkens de pie chart bijwerken van zodra er een addTicket of moveTicket gebeurt (vb. door een drag en drop)
         updatePieChart(this.columnName, this.tickets.length); 
     }
 
@@ -107,6 +112,10 @@ export class Column {
         });  
     }
 
+    requestSave() {
+        this.#board.save();
+    }
+
     save(columnObjectToStore) {
         columnObjectToStore.columnName = this.columnName;
         columnObjectToStore.tickets = [];
@@ -119,10 +128,11 @@ export class Column {
 
     static async load(board, columnObjectFromStore) {
         let column = new Column(board, columnObjectFromStore.columnName);
-        columnObjectFromStore.tickets.forEach(async ticketObjectFromStore => {
-            let ticket = await Ticket.load(ticketObjectFromStore);
+        for (let i = 0; i < columnObjectFromStore.tickets.length; i++) {
+            let ticket = await Ticket.load(columnObjectFromStore.tickets[i]);
+            ticket.column = column;
             column.#tickets.push(ticket);
-        });
+        };
         return column;
     }
 }

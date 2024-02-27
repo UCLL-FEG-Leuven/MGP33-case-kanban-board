@@ -94,10 +94,10 @@ export class Board {
         if (boardStringFromStore) {
             let board = new Board();
             let boardObjectFromStore = JSON.parse(boardStringFromStore);
-            boardObjectFromStore.columns.forEach(async columnObjectFromStore => {
-                let column = await Column.load(board, columnObjectFromStore);
+            for (let i = 0; i < boardObjectFromStore.columns.length; i++) {
+                let column = await Column.load(board, boardObjectFromStore.columns[i]);
                 board.#columns.push(column);
-            });
+            };
             return board;
         } else return null;
     }
