@@ -134,7 +134,7 @@ export class Ticket {
         });
 
         // Form om de titel aan te passen
-        document.getElementById(titleFormId).addEventListener("submit", (e) => {
+        document.getElementById(titleFormId).addEventListener("submit", async (e) => {
             // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
             e.preventDefault();
 
@@ -147,7 +147,7 @@ export class Ticket {
             document.getElementById(titleFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });        
     }
 
@@ -161,7 +161,7 @@ export class Ticket {
         });
 
         // Form om de description aan te passen
-        document.getElementById(descriptionFormId).addEventListener("submit", (e) => {
+        document.getElementById(descriptionFormId).addEventListener("submit", async (e) => {
             // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
             e.preventDefault();
 
@@ -174,7 +174,7 @@ export class Ticket {
             document.getElementById(descriptionFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });        
     }
 
@@ -209,7 +209,7 @@ export class Ticket {
             document.getElementById(personFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });
     }    
 

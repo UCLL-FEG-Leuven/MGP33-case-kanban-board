@@ -15,14 +15,14 @@ export class Board {
     }
 
     // Voegt het ticket toe aan de eerste column.
-    addTicket(ticket) {
+    async addTicket(ticket) {
         this.#columns[0].addTicket(ticket);
-        this.save();
+        await this.save();
         return ticket;
     }
 
     // Verplaats een ticket (op basis van zijn id) naar een andere kolom.
-    moveTicket(ticketId, columnName) {
+    async moveTicket(ticketId, columnName) {
         let ticket;
         let oldColumn;
         let newColumn;
@@ -51,7 +51,7 @@ export class Board {
             updatePieChart(oldColumn.columnName, oldColumn.tickets.length);
             updatePieChart(newColumn.columnName, newColumn.tickets.length);
 
-            this.save();
+            await this.save();
 
             return true;
         } else {
@@ -75,7 +75,7 @@ export class Board {
         });        
     }
 
-    save() {
+    async save() {
         let boardObjectToStore = {
             columns: []
         };
@@ -85,20 +85,44 @@ export class Board {
             boardObjectToStore.columns.push(columnObjectToStore);
         });
 
-        let boardStringToStore =  JSON.stringify(boardObjectToStore);
-        localStorage.setItem("board", boardStringToStore);
+        try {
+            await fetch("/api/board",
+            {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(boardObjectToStore)
+            });
+        } catch (error) {
+            console.error(error);
+        }        
     }
 
     static async load() {
-        let boardStringFromStore = localStorage.getItem("board");
-        if (boardStringFromStore) {
-            let board = new Board();
-            let boardObjectFromStore = JSON.parse(boardStringFromStore);
-            for (let i = 0; i < boardObjectFromStore.columns.length; i++) {
-                let column = await Column.load(board, boardObjectFromStore.columns[i]);
-                board.#columns.push(column);
-            };
-            return board;
-        } else return null;
+        try {
+            let response = await fetch("/api/board");
+            if (!response.ok) {
+                throw "Er is iets misgelopen bij het laden van het board.";
+            } else {
+                let boardAsObjectLiteral = await response.json();
+                if (boardAsObjectLiteral) {
+                    let board = new Board();
+                    for (let i = 0; i < boardAsObjectLiteral.columns.length; i++) {
+                        let column = await Column.load(board, boardAsObjectLiteral.columns[i]);
+                        board.#columns.push(column);
+                    };
+                    return board;
+                } else return null;    
+            }    
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    #resetError() {
+    }
+
+    #showError(error) {
     }
 }

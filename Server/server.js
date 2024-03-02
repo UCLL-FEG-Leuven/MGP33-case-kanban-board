@@ -27,6 +27,20 @@ app.use(connectLiveReload());
 // De static files middleware registreren
 app.use("/", express.static(join(__dirname, '..', 'Client')));
 
+// JSON middleware enablen
+app.use(express.json());
+
+let board = null;
+
+app.get('/api/board', (req, res) => {
+  res.json(board);
+});
+
+app.post('/api/board', (req, res) => {
+  board = req.body;
+  res.status(200).send();
+});
+
 app.listen(port, () => {
     console.log(`Node-Express server listening on port ${port}`);
 });
