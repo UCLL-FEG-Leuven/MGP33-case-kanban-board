@@ -10,7 +10,6 @@ let statesAndCounts = new Map();
 export function updatePieChart(state, count) {    
   
     statesAndCounts.set(state, count);
-    console.log(state + ": " + count);
     
     // console.log(Array.from(statesAndCounts.values()));
 

@@ -1,4 +1,5 @@
 import { updatePieChart } from "./pie-chart.js";
+import { Ticket } from "./ticket.js";
 
 export class Column {
     #board;
@@ -37,6 +38,8 @@ export class Column {
         this.#tickets.push(ticket);
         ticket.column = this;
 
+        updatePieChart(this.columnName, this.#tickets.length);
+
         return ticket;
     }
 
@@ -48,6 +51,9 @@ export class Column {
 
         this.#tickets = this.#tickets.filter(t => t.id !== ticketId);
         removedTickets[0].column = null;
+
+        updatePieChart(this.columnName, this.#tickets.length);
+
         return removedTickets[0];
     }
 
@@ -61,8 +67,16 @@ export class Column {
     async renderOnPage(boardHtmlElement) {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
-        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`;      
+        columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`
+        let addTicketButtonElement = document.createElement("button");
+        addTicketButtonElement.setAttribute('class', 'add');
+        addTicketButtonElement.innerText = '+';        
+        columnHtmlElement.appendChild(addTicketButtonElement);
         boardHtmlElement.appendChild(columnHtmlElement);
+
+        // Koppelen van de add ticket event handler.
+        this.#wireAddTicketEventHandler(addTicketButtonElement);
+
 
         // Koppelen van drop event handlers.
         this.#wireDragAndDropEventHandlers(columnHtmlElement);
@@ -74,8 +88,20 @@ export class Column {
         });
 
         // De pie chart een eerste keer bijwerken. 
-        // Het board zal ook telkens de pie chart bijwerken van zodra er een moveTicket gebeurt (vb. door een drag en drop)
+        // Het board zal ook telkens de pie chart bijwerken van zodra er een addTicket of moveTicket gebeurt (vb. door een drag en drop)
         updatePieChart(this.columnName, this.tickets.length); 
+    }
+
+    #wireAddTicketEventHandler(buttonElement) {
+        buttonElement.addEventListener('click', async (e) => {
+            let ticket = new Ticket('Pas de titel aan');
+            ticket.description = 'Voeg een beschrijving toe';
+            this.#board.addTicket(ticket);
+            this.#board.moveTicket(ticket.id, this.columnName);
+
+            let ol = e.currentTarget.parentElement.lastChild;
+            await ticket.renderOnPage(ol);
+        });
     }
 
     #wireDragAndDropEventHandlers(columnHtmlElement) {
@@ -91,5 +117,29 @@ export class Column {
                 this.#columnTicketsContainerHtmlElement.insertBefore(ticketHtmlElementToMove, this.#columnTicketsContainerHtmlElement.firstChild);
             }
         });  
+    }
+
+    requestSave() {
+        this.#board.save();
+    }
+
+    save(columnObjectToStore) {
+        columnObjectToStore.columnName = this.columnName;
+        columnObjectToStore.tickets = [];
+        this.#tickets.forEach(t => {
+            let ticketObjectToStore = {};
+            t.save(ticketObjectToStore);
+            columnObjectToStore.tickets.push(ticketObjectToStore);
+        });
+    }
+
+    static async load(board, columnObjectFromStore) {
+        let column = new Column(board, columnObjectFromStore.columnName);
+        for (let i = 0; i < columnObjectFromStore.tickets.length; i++) {
+            let ticket = await Ticket.load(columnObjectFromStore.tickets[i]);
+            ticket.column = column;
+            column.#tickets.push(ticket);
+        };
+        return column;
     }
 }

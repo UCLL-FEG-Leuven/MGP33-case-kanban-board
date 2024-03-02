@@ -1,6 +1,6 @@
 {
   "name": "mgp33-case-kanban-board",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Kanban board case voor FEG",
   "main": "index.js",
   "scripts": {
