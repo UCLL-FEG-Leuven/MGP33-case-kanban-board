@@ -68,3 +68,15 @@ Dat script zal eerst een ```npm ci``` doen in de /Client folder en vervolgens ee
 Dat start script zal op zijn beurt ook weer een ```npm ci``` doen in de /Server folder en uiteindelijk de server starten via ```cross-env PORT=2024 nodemon server.js```.
 Dat laatste commando lees je als volgt: 
 "maak een environment variabele 'PORT' aan met de waarde 2024 en geef dat door aan nodemon. Nodemon zal vervolgens een 'node server.js' uitvoeren maar zal ook de bestanden 'watchen'. Van zodra een bestand wijzigt zal nodemon het 'node server.js' proces stoppen en weer starten".
+
+## Iteratie/versie 0.5: JSON (hoofdstuk 05)
+In deze versie gaan we de 'state' van het Kanban Board bijhouden in localStorage.
+Dat houdt in dat we de 'state' moeten omzetten naar een JavaScript object dat kan geserialiseerd worden naar een JSON string.
+Deze string wordt vervolgens opgeslagen in localStorage.
+Het laden van het Kanban Board komt dan neer op het uitlezen van die JSON string uit de localStorage, waarna deze weer omgezet wordt naar een Board object bestaande uit Column, Ticket en Person objecten.
+
+Aangezien we objectgeoriënteerd werken werd de betrokken load() en save() functionaliteit verdeeld over de Board, Column en Ticket classes.
+Elke klasse is dus verantwoordelijk voor haar deel van het laden en bewaren.
+
+Verder werd ook het random aanmaken van de taken weggewerkt en kreeg elke kolom een '+' (add ticket) button.
+Via deze button kan de gebruiker zelf tickets toevoegen.

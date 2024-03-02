@@ -222,8 +222,8 @@ export class Ticket {
     static async load(ticketObjectFromStore) {
         let persons = await getAllPersons();
         let ticket = new Ticket(ticketObjectFromStore.title);
-        this.description = ticketObjectFromStore.description;
-        this.person = ticketObjectFromStore.currentPersonId ? persons.filter(p => p.id === ticketObjectFromStore.personId)[0] : null;
+        ticket.description = ticketObjectFromStore.description;
+        ticket.person = ticketObjectFromStore.personId != null ? persons.filter(p => p.id === ticketObjectFromStore.personId)[0] : null;
         return ticket;
     }
 }

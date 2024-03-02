@@ -68,20 +68,15 @@ export class Column {
         let columnHtmlElement = document.createElement("div");
         columnHtmlElement.className = "grid-column";
         columnHtmlElement.innerHTML = `<h2>${this.columnName}</h2>`
-        let buttonElement = document.createElement("button");
-        buttonElement.setAttribute('class', 'add');
-        buttonElement.innerText = '+';        
-        buttonElement.addEventListener('click', async (e) => {
-            let ticket = new Ticket('Pas de titel aan');
-            ticket.description = 'Voeg een beschrijving toe';
-            this.#board.addTicket(ticket);
-            this.#board.moveTicket(ticket.id, this.columnName);
-
-            let ol = e.currentTarget.parentElement.lastChild;
-            await ticket.renderOnPage(ol);
-        });
-        columnHtmlElement.appendChild(buttonElement);
+        let addTicketButtonElement = document.createElement("button");
+        addTicketButtonElement.setAttribute('class', 'add');
+        addTicketButtonElement.innerText = '+';        
+        columnHtmlElement.appendChild(addTicketButtonElement);
         boardHtmlElement.appendChild(columnHtmlElement);
+
+        // Koppelen van de add ticket event handler.
+        this.#wireAddTicketEventHandler(addTicketButtonElement);
+
 
         // Koppelen van drop event handlers.
         this.#wireDragAndDropEventHandlers(columnHtmlElement);
@@ -95,6 +90,18 @@ export class Column {
         // De pie chart een eerste keer bijwerken. 
         // Het board zal ook telkens de pie chart bijwerken van zodra er een addTicket of moveTicket gebeurt (vb. door een drag en drop)
         updatePieChart(this.columnName, this.tickets.length); 
+    }
+
+    #wireAddTicketEventHandler(buttonElement) {
+        buttonElement.addEventListener('click', async (e) => {
+            let ticket = new Ticket('Pas de titel aan');
+            ticket.description = 'Voeg een beschrijving toe';
+            this.#board.addTicket(ticket);
+            this.#board.moveTicket(ticket.id, this.columnName);
+
+            let ol = e.currentTarget.parentElement.lastChild;
+            await ticket.renderOnPage(ol);
+        });
     }
 
     #wireDragAndDropEventHandlers(columnHtmlElement) {

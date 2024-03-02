@@ -25,8 +25,12 @@ section {
 }
 
 .grid-column .add {
-    width: 2em;
-    margin: 0 auto;
+    margin-left: 1.2em;
+    background-color: #002757;
+    border: none;
+    color: white;
+    min-width: 2em;
+    min-height: 2em;
 }
 
 .grid-column h2 {

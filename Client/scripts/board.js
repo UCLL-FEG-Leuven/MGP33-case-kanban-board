@@ -86,11 +86,11 @@ export class Board {
         });
 
         let boardStringToStore =  JSON.stringify(boardObjectToStore);
-        window.localStorage.setItem("board", boardStringToStore);
+        localStorage.setItem("board", boardStringToStore);
     }
 
     static async load() {
-        let boardStringFromStore = window.localStorage.getItem("board");
+        let boardStringFromStore = localStorage.getItem("board");
         if (boardStringFromStore) {
             let board = new Board();
             let boardObjectFromStore = JSON.parse(boardStringFromStore);
