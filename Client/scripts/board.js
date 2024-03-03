@@ -92,7 +92,8 @@ export class Board {
 
     async save() {
         try {
-            await fetch("/api/board",
+            Board.#resetError();
+            let response = await fetch("/api/board",
             {
               method: "POST",
               headers: {
@@ -100,16 +101,20 @@ export class Board {
               },
               body: JSON.stringify(this)
             });
+            if (!response.ok) {
+                throw `Er is iets misgelopen bij het bewaren van het board. Status code: ${response.status}.`
+            }
         } catch (error) {
-            console.error(error);
+            Board.#showError("Er is een fout opgetreden bij het bewaren van het board: " + error);
         }        
     }
 
     static async load() {
         try {
+            Board.#resetError();
             let response = await fetch("/api/board");
             if (!response.ok) {
-                throw "Er is iets misgelopen bij het laden van het board.";
+                throw `Er is iets misgelopen bij het laden van het board. Status code: ${response.status}.`
             } else {
                 let boardAsObjectLiteral = await response.json();
                 if (boardAsObjectLiteral) {
@@ -117,7 +122,18 @@ export class Board {
                 } else return null;    
             }    
         } catch (error) {
-            console.error(error);
+            Board.#showError("Er is een fout opgetreden bij het laden van het board: " + error);
         }
+    }
+
+    static #resetError() {
+        document.getElementById("error").style.visibility = "hidden";
+        document.getElementById("error").innerText = "";
+    }
+
+    static #showError(error) {
+        document.getElementById("error").style.visibility = "unset";
+        document.getElementById("error").innerText = error;
+
     }
 }

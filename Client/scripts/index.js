@@ -4,7 +4,6 @@ import { Board } from "./board.js";
 let board = await Board.load();
 if (!board) {
     board = new Board("To do", "Doing", "Done");
-    board.save();
 }
 
 // Nu dat alles aangemaakt werd ... het resultaat tonen.
