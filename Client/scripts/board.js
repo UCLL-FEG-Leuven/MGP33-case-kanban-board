@@ -75,16 +75,22 @@ export class Board {
         });        
     }
 
-    async save() {
-        let boardObjectToStore = {
-            columns: []
+    toJSON() {
+        return {
+            columns: this.#columns.map(c => c.toJSON())
         };
-        this.#columns.forEach(column => {
-            let columnObjectToStore = {};
-            column.save(columnObjectToStore);
-            boardObjectToStore.columns.push(columnObjectToStore);
-        });
+    }
 
+    static async fromJSON(boardAsObjectLiteral) {
+        let board = new Board();
+        for (let i = 0; i < boardAsObjectLiteral.columns.length; i++) {
+            let column = await Column.fromJSON(board, boardAsObjectLiteral.columns[i]);
+            board.#columns.push(column);
+        };
+        return board;
+    }
+
+    async save() {
         try {
             await fetch("/api/board",
             {
@@ -92,7 +98,7 @@ export class Board {
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(boardObjectToStore)
+              body: JSON.stringify(this)
             });
         } catch (error) {
             console.error(error);
@@ -107,22 +113,11 @@ export class Board {
             } else {
                 let boardAsObjectLiteral = await response.json();
                 if (boardAsObjectLiteral) {
-                    let board = new Board();
-                    for (let i = 0; i < boardAsObjectLiteral.columns.length; i++) {
-                        let column = await Column.load(board, boardAsObjectLiteral.columns[i]);
-                        board.#columns.push(column);
-                    };
-                    return board;
+                    return await Board.fromJSON(boardAsObjectLiteral)
                 } else return null;    
             }    
         } catch (error) {
             console.error(error);
         }
-    }
-
-    #resetError() {
-    }
-
-    #showError(error) {
     }
 }
