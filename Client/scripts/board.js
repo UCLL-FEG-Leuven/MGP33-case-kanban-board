@@ -75,30 +75,31 @@ export class Board {
         });        
     }
 
-    save() {
-        let boardObjectToStore = {
-            columns: []
+    toJSON() {
+        return {
+            columns: this.#columns.map(c => c.toJSON())
         };
-        this.#columns.forEach(column => {
-            let columnObjectToStore = {};
-            column.save(columnObjectToStore);
-            boardObjectToStore.columns.push(columnObjectToStore);
-        });
+    }
 
-        let boardStringToStore =  JSON.stringify(boardObjectToStore);
+    static async fromJSON(boardAsObjectLiteral) {
+        let board = new Board();
+        for (let i = 0; i < boardAsObjectLiteral.columns.length; i++) {
+            let column = await Column.fromJSON(board, boardAsObjectLiteral.columns[i]);
+            board.#columns.push(column);
+        };
+        return board;
+    }
+
+    save() {
+        let boardStringToStore =  JSON.stringify(this);
         localStorage.setItem("board", boardStringToStore);
     }
 
     static async load() {
         let boardStringFromStore = localStorage.getItem("board");
         if (boardStringFromStore) {
-            let board = new Board();
-            let boardObjectFromStore = JSON.parse(boardStringFromStore);
-            for (let i = 0; i < boardObjectFromStore.columns.length; i++) {
-                let column = await Column.load(board, boardObjectFromStore.columns[i]);
-                board.#columns.push(column);
-            };
-            return board;
+            let boardAsObjectLiteral = JSON.parse(boardStringFromStore);
+            return await this.fromJSON(boardAsObjectLiteral);
         } else return null;
     }
 }

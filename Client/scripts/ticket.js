@@ -213,17 +213,19 @@ export class Ticket {
         });
     }    
 
-    save(ticketObjectForStore) {
-        ticketObjectForStore.title = this.title;
-        ticketObjectForStore.description = this.description;
-        ticketObjectForStore.personId = this.person ? this.person.id : null;
+    toJSON() {
+        return {
+            title: this.#title,
+            description: this.#description,
+            personId: this.#person ? this.#person.id : null
+        };
     }
-
-    static async load(ticketObjectFromStore) {
+    
+    static async fromJSON(ticketAsObjectLiteral) {
         let persons = await getAllPersons();
-        let ticket = new Ticket(ticketObjectFromStore.title);
-        ticket.description = ticketObjectFromStore.description;
-        ticket.person = ticketObjectFromStore.personId != null ? persons.filter(p => p.id === ticketObjectFromStore.personId)[0] : null;
+        let ticket = new Ticket(ticketAsObjectLiteral.title);
+        ticket.description = ticketAsObjectLiteral.description;
+        ticket.person = ticketAsObjectLiteral.personId != null ? persons.filter(p => p.id === ticketAsObjectLiteral.personId)[0] : null;
         return ticket;
     }
 }

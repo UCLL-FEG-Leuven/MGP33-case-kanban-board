@@ -123,20 +123,17 @@ export class Column {
         this.#board.save();
     }
 
-    save(columnObjectToStore) {
-        columnObjectToStore.columnName = this.columnName;
-        columnObjectToStore.tickets = [];
-        this.#tickets.forEach(t => {
-            let ticketObjectToStore = {};
-            t.save(ticketObjectToStore);
-            columnObjectToStore.tickets.push(ticketObjectToStore);
-        });
+    toJSON() {
+        return {
+            columnName: this.#columnName,
+            tickets: this.#tickets.map(t => t.toJSON())
+        }
     }
 
-    static async load(board, columnObjectFromStore) {
-        let column = new Column(board, columnObjectFromStore.columnName);
-        for (let i = 0; i < columnObjectFromStore.tickets.length; i++) {
-            let ticket = await Ticket.load(columnObjectFromStore.tickets[i]);
+    static async fromJSON(board, columnAsObjectLiteral) {
+        let column = new Column(board, columnAsObjectLiteral.columnName);
+        for (let i = 0; i < columnAsObjectLiteral.tickets.length; i++) {
+            let ticket = await Ticket.fromJSON(columnAsObjectLiteral.tickets[i]);
             ticket.column = column;
             column.#tickets.push(ticket);
         };
