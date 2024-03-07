@@ -80,3 +80,23 @@ Elke klasse is dus verantwoordelijk voor haar deel van het laden en bewaren.
 
 Verder werd ook het random aanmaken van de taken weggewerkt en kreeg elke kolom een '+' (add ticket) button.
 Via deze button kan de gebruiker zelf tickets toevoegen.
+
+## Iteratie/versie 0.6: AJAX (hoofdstuk 06)
+In deze laatste versie van het Kanban Board (= laatste versie zonder Angular) gaan we de toestand van het bord bewaren op/laden vanop de server.
+Zo kan het board in verschillende types browsers getoond worden en zijn we niet meer afhankelijk van de localStorage van één bepaalde browser.
+De server.js werd daartoe uitgebruikt met een GET route naar /api/board en een POST route naar /api/board. 
+Bemerk dat we ook de JSON middleware activeren met ```app.use(express.json())```.
+
+Wel twee belangrijkste aandachtspunten:
+1. De server houdt het board 'in memory' bij. Dat houdt in dat de toestand weer verdwijnt na de herstart van de server. 
+Om dat probleem op te lossen moeten we gebruiken maken van een storage mechanisme zoals een SQL Server of een MongoDB. 
+Maar dat is momenteel out of scope.
+2. De server houdt momenteel ook maar één board bij voor alle gebruikers. Er is momenteel nog geen mechanisme voorzien om meerdere boards te ondersteunen.
+
+### Het Kanban Board deployen in de clould door middel van Docker
+Nu kunnen we onze server ook in de cloud zetten zodat het Board vanop eender welk toestel op het internet beschikbaar is.
+
+Het 'in de cloud' zetten voorzien we door de server als een Docker container te bouwen. Deze container kunnen we dan gebruiken in een cloud provider zoals Azure.
+Om deze Docker feature te kunnen enablen hebben we wel een 3-tal files moeten toevoegen: .dockerignore, componse.yaml en Dockerfile.
+Deze 3 files werden automatisch aangemaakt met ```docker init``` in de /Server directory. Je moet dan wel de ```Docker Desktop for Windows``` software hebben.
+Meer informatie wordt in het bijhorende filmpje gegeven.

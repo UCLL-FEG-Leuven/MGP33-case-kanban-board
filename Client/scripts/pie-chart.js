@@ -1,4 +1,4 @@
-import '../node_modules/chart.js/dist/chart.umd.js';
+import './chart.umd.js';
 
 const ctx = document.getElementById('pie-chart');
 let chart = null;
