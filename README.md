@@ -99,4 +99,4 @@ Nu kunnen we onze server ook in de cloud zetten zodat het Board vanop eender wel
 Het 'in de cloud' zetten voorzien we door de server als een Docker container te bouwen. Deze container kunnen we dan gebruiken in een cloud provider zoals Azure.
 Om deze Docker feature te kunnen enablen hebben we wel een 3-tal files moeten toevoegen: .dockerignore, componse.yaml en Dockerfile.
 Deze 3 files werden automatisch aangemaakt met ```docker init``` in de /Server directory. Je moet dan wel de ```Docker Desktop for Windows``` software hebben.
-Meer informatie wordt in het bijhorende filmpje gegeven.
+Meer informatie wordt in het bijhorende filmpje gegeven en wordt ook besproken in het **IT Landscape** OPO.
