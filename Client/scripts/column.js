@@ -99,7 +99,10 @@ export class Column {
             this.#board.addTicket(ticket);
             this.#board.moveTicket(ticket.id, this.columnName);
 
-            let ol = e.currentTarget.parentElement.lastChild;
+            // Het gebruik van e.currentTarget is niet aangewezen bij een 'async' event handler
+            // omdat de waarde ervan wijzigt afhankelijk van de event handler aan dewelke het afgeleverd wordt.
+            // Async event handlers voeren op het einde uit waardoor die op null staat.
+            let ol = buttonElement.parentElement.lastChild;
             await ticket.renderOnPage(ol);
         });
     }
