@@ -77,7 +77,7 @@ export class Board {
 
     toJSON() {
         return {
-            columns: this.#columns.map(c => c.toJSON())
+            columns: this.#columns
         };
     }
 
