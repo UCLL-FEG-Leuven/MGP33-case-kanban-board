@@ -126,7 +126,7 @@ export class Column {
     toJSON() {
         return {
             columnName: this.#columnName,
-            tickets: this.#tickets.map(t => t.toJSON())
+            tickets: this.#tickets
         }
     }
 

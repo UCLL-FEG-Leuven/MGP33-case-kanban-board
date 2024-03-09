@@ -77,7 +77,7 @@ export class Board {
 
     toJSON() {
         return {
-            columns: this.#columns.map(c => c.toJSON())
+            columns: this.#columns
         };
     }
 
@@ -99,7 +99,7 @@ export class Board {
         let boardStringFromStore = localStorage.getItem("board");
         if (boardStringFromStore) {
             let boardAsObjectLiteral = JSON.parse(boardStringFromStore);
-            return await this.fromJSON(boardAsObjectLiteral);
+            return await Board.fromJSON(boardAsObjectLiteral);
         } else return null;
     }
 }

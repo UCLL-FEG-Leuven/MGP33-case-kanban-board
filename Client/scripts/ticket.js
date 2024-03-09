@@ -215,6 +215,7 @@ export class Ticket {
 
     toJSON() {
         return {
+            id: this.#id,
             title: this.#title,
             description: this.#description,
             personId: this.#person ? this.#person.id : null
@@ -224,6 +225,7 @@ export class Ticket {
     static async fromJSON(ticketAsObjectLiteral) {
         let persons = await getAllPersons();
         let ticket = new Ticket(ticketAsObjectLiteral.title);
+        ticket.#id = ticketAsObjectLiteral.id;
         ticket.description = ticketAsObjectLiteral.description;
         ticket.person = ticketAsObjectLiteral.personId != null ? persons.filter(p => p.id === ticketAsObjectLiteral.personId)[0] : null;
         return ticket;
