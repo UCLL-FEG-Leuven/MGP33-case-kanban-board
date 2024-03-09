@@ -5,11 +5,11 @@ import { join } from "path";
 const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
-  const { livereload } = await import("livereload");
-  const { connectLiveReload } = await import("connect-livereload");
+  const { createServer } = await import("livereload");
+  const connectLiveReload = (await import("connect-livereload")).default;
 
   // Met livereload zal de browser automatisch refreshen van zodra er een wijziging is aan de backend of frontend.
-  const liveReloadServer = livereload.createServer();
+  const liveReloadServer = createServer();
   liveReloadServer.watch(join(__dirname, '..','client')); // Deze is nodig om bij frontend changes ook een refresh te doen.
   liveReloadServer.server.once("connection", () => {
     setTimeout(() => {
