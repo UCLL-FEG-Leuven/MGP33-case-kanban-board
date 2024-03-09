@@ -134,7 +134,7 @@ export class Ticket {
         });
 
         // Form om de titel aan te passen
-        document.getElementById(titleFormId).addEventListener("submit", (e) => {
+        document.getElementById(titleFormId).addEventListener("submit", async (e) => {
             // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
             e.preventDefault();
 
@@ -147,7 +147,7 @@ export class Ticket {
             document.getElementById(titleFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });        
     }
 
@@ -161,7 +161,7 @@ export class Ticket {
         });
 
         // Form om de description aan te passen
-        document.getElementById(descriptionFormId).addEventListener("submit", (e) => {
+        document.getElementById(descriptionFormId).addEventListener("submit", async (e) => {
             // Dit zorgt ervoor dat er geen postback van de form gebeurt (anders ben je alles kwijt!)
             e.preventDefault();
 
@@ -174,7 +174,7 @@ export class Ticket {
             document.getElementById(descriptionFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });        
     }
 
@@ -209,21 +209,25 @@ export class Ticket {
             document.getElementById(personFormId).style.display = "none";
 
             // direct bewaren
-            this.#column.requestSave();
+            await this.#column.requestSave();
         });
     }    
 
-    save(ticketObjectForStore) {
-        ticketObjectForStore.title = this.title;
-        ticketObjectForStore.description = this.description;
-        ticketObjectForStore.personId = this.person ? this.person.id : null;
+    toJSON() {
+        return {
+            id: this.#id,
+            title: this.#title,
+            description: this.#description,
+            personId: this.#person ? this.#person.id : null
+        };
     }
 
-    static async load(ticketObjectFromStore) {
+    static async fromJSON(ticketAsObjectLiteral) {
         let persons = await getAllPersons();
-        let ticket = new Ticket(ticketObjectFromStore.title);
-        ticket.description = ticketObjectFromStore.description;
-        ticket.person = ticketObjectFromStore.personId != null ? persons.filter(p => p.id === ticketObjectFromStore.personId)[0] : null;
+        let ticket = new Ticket(ticketAsObjectLiteral.title);
+        ticket.#id = ticketAsObjectLiteral.id;
+        ticket.description = ticketAsObjectLiteral.description;
+        ticket.person = ticketAsObjectLiteral.personId != null ? persons.filter(p => p.id === ticketAsObjectLiteral.personId)[0] : null;
         return ticket;
     }
 }

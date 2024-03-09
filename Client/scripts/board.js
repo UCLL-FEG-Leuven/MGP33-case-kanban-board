@@ -15,14 +15,14 @@ export class Board {
     }
 
     // Voegt het ticket toe aan de eerste column.
-    addTicket(ticket) {
+    async addTicket(ticket) {
         this.#columns[0].addTicket(ticket);
-        this.save();
+        await this.save();
         return ticket;
     }
 
     // Verplaats een ticket (op basis van zijn id) naar een andere kolom.
-    moveTicket(ticketId, columnName) {
+    async moveTicket(ticketId, columnName) {
         let ticket;
         let oldColumn;
         let newColumn;
@@ -51,7 +51,7 @@ export class Board {
             updatePieChart(oldColumn.columnName, oldColumn.tickets.length);
             updatePieChart(newColumn.columnName, newColumn.tickets.length);
 
-            this.save();
+            await this.save();
 
             return true;
         } else {
@@ -75,30 +75,65 @@ export class Board {
         });        
     }
 
-    save() {
-        let boardObjectToStore = {
-            columns: []
+    toJSON() {
+        return {
+            columns: this.#columns
         };
-        this.#columns.forEach(column => {
-            let columnObjectToStore = {};
-            column.save(columnObjectToStore);
-            boardObjectToStore.columns.push(columnObjectToStore);
-        });
+    }
 
-        let boardStringToStore =  JSON.stringify(boardObjectToStore);
-        localStorage.setItem("board", boardStringToStore);
+    static async fromJSON(boardAsObjectLiteral) {
+        let board = new Board();
+        for (let i = 0; i < boardAsObjectLiteral.columns.length; i++) {
+            let column = await Column.fromJSON(board, boardAsObjectLiteral.columns[i]);
+            board.#columns.push(column);
+        };
+        return board;
+    }
+
+    async save() {
+        try {
+            Board.#resetError();
+            let response = await fetch("/api/board",
+            {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(this)
+            });
+            if (!response.ok) {
+                throw `Er is iets misgelopen bij het bewaren van het board. Status code: ${response.status}.`
+            }
+        } catch (error) {
+            Board.#showError("Er is een fout opgetreden bij het bewaren van het board: " + error);
+        }        
     }
 
     static async load() {
-        let boardStringFromStore = localStorage.getItem("board");
-        if (boardStringFromStore) {
-            let board = new Board();
-            let boardObjectFromStore = JSON.parse(boardStringFromStore);
-            for (let i = 0; i < boardObjectFromStore.columns.length; i++) {
-                let column = await Column.load(board, boardObjectFromStore.columns[i]);
-                board.#columns.push(column);
-            };
-            return board;
-        } else return null;
+        try {
+            Board.#resetError();
+            let response = await fetch("/api/board");
+            if (!response.ok) {
+                throw `Er is iets misgelopen bij het laden van het board. Status code: ${response.status}.`
+            } else {
+                let boardAsObjectLiteral = await response.json();
+                if (boardAsObjectLiteral) {
+                    return await Board.fromJSON(boardAsObjectLiteral)
+                } else return null;    
+            }    
+        } catch (error) {
+            Board.#showError("Er is een fout opgetreden bij het laden van het board: " + error);
+        }
+    }
+
+    static #resetError() {
+        document.getElementById("error").style.visibility = "hidden";
+        document.getElementById("error").innerText = "";
+    }
+
+    static #showError(error) {
+        document.getElementById("error").style.visibility = "unset";
+        document.getElementById("error").innerText = error;
+
     }
 }

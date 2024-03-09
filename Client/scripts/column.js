@@ -96,10 +96,13 @@ export class Column {
         buttonElement.addEventListener('click', async (e) => {
             let ticket = new Ticket('Pas de titel aan');
             ticket.description = 'Voeg een beschrijving toe';
-            this.#board.addTicket(ticket);
-            this.#board.moveTicket(ticket.id, this.columnName);
+            await this.#board.addTicket(ticket);
+            await this.#board.moveTicket(ticket.id, this.columnName);
 
-            let ol = e.currentTarget.parentElement.lastChild;
+            // Het gebruik van e.currentTarget is niet aangewezen bij een 'async' event handler
+            // omdat de waarde ervan wijzigt afhankelijk van de event handler aan dewelke het afgeleverd wordt.
+            // Async event handlers voeren op het einde uit waardoor die op null staat.
+            let ol = buttonElement.parentElement.lastChild;
             await ticket.renderOnPage(ol);
         });
     }
@@ -119,24 +122,21 @@ export class Column {
         });  
     }
 
-    requestSave() {
-        this.#board.save();
+    async requestSave() {
+        await this.#board.save();
     }
 
-    save(columnObjectToStore) {
-        columnObjectToStore.columnName = this.columnName;
-        columnObjectToStore.tickets = [];
-        this.#tickets.forEach(t => {
-            let ticketObjectToStore = {};
-            t.save(ticketObjectToStore);
-            columnObjectToStore.tickets.push(ticketObjectToStore);
-        });
+    toJSON() {
+        return {
+            columnName: this.#columnName,
+            tickets: this.#tickets
+        }
     }
 
-    static async load(board, columnObjectFromStore) {
-        let column = new Column(board, columnObjectFromStore.columnName);
-        for (let i = 0; i < columnObjectFromStore.tickets.length; i++) {
-            let ticket = await Ticket.load(columnObjectFromStore.tickets[i]);
+    static async fromJSON(board, columnAsObjectLiteral) {
+        let column = new Column(board, columnAsObjectLiteral.columnName);
+        for (let i = 0; i < columnAsObjectLiteral.tickets.length; i++) {
+            let ticket = await Ticket.fromJSON(columnAsObjectLiteral.tickets[i]);
             ticket.column = column;
             column.#tickets.push(ticket);
         };
