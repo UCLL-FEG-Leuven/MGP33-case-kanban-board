@@ -1,5 +1,5 @@
 # UCLL FEG case: Kanban board
-Deze case vormt een rode draad doorheen de hele FEG cursus.  
+Deze case vormt een rode draad doorheen (het niet-Angular deel van) de FEG cursus.  
 Elk hoofdstuk dat we behandelen zal toegepast worden op deze case.  
 Lees zeker de informatie die in deze README.md staat, aangevuld met de code commentaar die we in elke iteratie/versie voorzien.
 
